@@ -1,0 +1,181 @@
+/* ==========================================================================
+   BIND & YIELD — Custom Stylesheet
+   ========================================================================== */
+
+:root {
+  --brand-navy: #0E2646;
+  --brand-navy-hover: #0A1C33;
+  --brand-sky: #68C3F5;
+  --brand-sky-hover: #4BAEE6;
+  --brand-surface: #F4F6F9;
+  --brand-slate: #475569;
+  --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Base & Mobile-First Safeguards */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Evita que el navbar fijo tape los títulos al navegar */
+  -webkit-tap-highlight-color: rgba(104, 195, 245, 0.2);
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   Tipografía Fluida (Mobile-First con clamp)
+   ========================================================================== */
+.hero-title {
+  font-size: clamp(2rem, 4.5vw + 1rem, 3.5rem);
+  letter-spacing: -0.025em;
+}
+
+.section-title {
+  font-size: clamp(1.65rem, 3vw + 0.85rem, 2.5rem);
+  letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   Navbar & Estados de Scroll
+   ========================================================================== */
+#navbar.is-scrolled {
+  background-color: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 24px -6px rgba(14, 38, 70, 0.08);
+  border-bottom-color: rgba(226, 232, 240, 0.9);
+}
+
+/* ==========================================================================
+   Botones y Microinteracciones
+   ========================================================================== */
+.btn-primary {
+  position: relative;
+  transition: transform 0.2s var(--transition-smooth), 
+              background-color 0.2s ease, 
+              box-shadow 0.25s var(--transition-smooth);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px -8px rgba(14, 38, 70, 0.25);
+}
+
+.btn-primary:active {
+  transform: scale(0.98) translateY(0);
+}
+
+.service-cta {
+  transition: transform 0.2s var(--transition-smooth), 
+              background-color 0.2s ease;
+}
+
+.service-cta:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   Formulario y Estados de Validación
+   ========================================================================== */
+/* Previene el zoom automático en iOS al enfocar inputs (mínimo 16px) */
+.form-input {
+  font-size: 16px;
+}
+
+.form-input.is-invalid {
+  border-color: #e11d48 !important; /* Rose 600 */
+  background-color: #fff1f2 !important; /* Rose 50 */
+}
+
+.form-input.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15) !important;
+}
+
+/* ==========================================================================
+   Motion Design & Animaciones Sutiles
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  /* Aparición gradual al hacer scroll (controlado por IntersectionObserver en JS) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.65s var(--transition-smooth), 
+                transform 0.65s var(--transition-smooth);
+    will-change: opacity, transform;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Flotación suave para la tarjeta de notificación de WhatsApp en el Hero */
+  @keyframes gentleFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  .animate-float {
+    animation: gentleFloat 4.5s ease-in-out infinite;
+  }
+}
+
+/* Si el usuario prefiere reducir el movimiento, todo es visible inmediatamente */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .animate-float {
+    animation: none !important;
+  }
+
+  .btn-primary,
+  .service-cta {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   Accesibilidad: Estados Focus Visibles para Navegación por Teclado
+   ========================================================================== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--brand-sky);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Custom Scrollbar (Sutil y acorde a la paleta en navegadores WebKit)
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--brand-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+  border: 2px solid var(--brand-surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
