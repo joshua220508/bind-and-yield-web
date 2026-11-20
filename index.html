@@ -23,7 +23,7 @@
               navyHover: '#0A1C33',
               sky: '#68C3F5',
               skyHover: '#4BAEE6',
-              surface: '#F4F6F9',
+              surface: '#E9EEF5',
               slate: '#475569'
             }
           },
@@ -43,63 +43,144 @@
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styles.css">
+  <script>
+    if (sessionStorage.getItem('by_intro_played')) {
+      document.documentElement.classList.add('skip-preloader');
+    }
+  </script>
 </head>
 <body class="bg-white text-brand-slate font-sans antialiased selection:bg-brand-sky/30 selection:text-brand-navy overflow-x-hidden">
+<!-- PANTALLA DE CARGA INICIAL (Solo primera visita de la sesión) -->
+<!-- PANTALLA DE CARGA INICIAL (Centrada verticalmente + Alto contraste) -->
+  <div id="page-preloader" aria-hidden="true" class="fixed inset-0 z-[100] preloader-surface flex flex-col items-center justify-center px-6 text-center transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]">
+    
+    <!-- Halo suave centrado detrás del emblema -->
+    <div class="preloader-glow absolute w-72 h-72 rounded-full bg-brand-sky/10 blur-3xl pointer-events-none"></div>
 
+    <!-- Contenedor vertical perfectamente alineado -->
+    <div class="relative flex flex-col items-center">
+      
+      <!-- 1. Isotipo arriba con órbita y onda -->
+      <div class="relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 mb-5">
+        <!-- Onda expansiva -->
+        <div class="preloader-shockwave absolute inset-0 rounded-full border border-brand-sky/50"></div>
+        
+        <!-- Arco orbital giratorio -->
+        <svg class="preloader-orbit absolute -inset-2 w-[calc(100%+16px)] h-[calc(100%+16px)]" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="46" stroke="url(#orbitGrad)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="105 185" />
+          <defs>
+            <linearGradient id="orbitGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#68C3F5" stop-opacity="0.95" />
+              <stop offset="100%" stop-color="#68C3F5" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <!-- Isotipo vectorial en 3 piezas -->
+        <svg class="relative w-14 h-14 sm:w-16 sm:h-16 overflow-visible" viewBox="0 0 84 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect class="logo-piece-bar" x="6" y="4" width="20" height="72" rx="10" fill="#68C3F5" />
+          <rect class="logo-piece-top" x="32" y="8" width="40" height="28" rx="14" fill="#68C3F5" />
+          <rect class="logo-piece-bottom" x="32" y="42" width="46" height="30" rx="15" fill="#FFFFFF" />
+        </svg>
+
+        <!-- Destello diagonal -->
+        <div class="preloader-sheen pointer-events-none absolute inset-0 rounded-2xl overflow-hidden"></div>
+      </div>
+
+      <!-- 2. Nombre de marca centrado debajo del isotipo -->
+      <div class="overflow-hidden py-1">
+        <div class="preloader-wordmark font-display font-extrabold text-3xl sm:text-5xl tracking-tight text-white flex items-center justify-center gap-2">
+          <span>Bind</span>
+          <span class="text-brand-sky">&</span>
+          <span>Yield</span>
+        </div>
+      </div>
+
+      <!-- 3. Barra de progreso y subtítulo alineados al eje central -->
+      <div class="mt-6 flex flex-col items-center gap-3">
+        <div class="w-44 sm:w-56 h-[2.5px] bg-white/10 rounded-full overflow-hidden">
+          <div class="preloader-progress h-full bg-gradient-to-r from-brand-sky via-white to-brand-sky rounded-full"></div>
+        </div>
+        <span class="preloader-tagline text-[11px] sm:text-xs font-display font-semibold uppercase tracking-[0.26em] text-slate-300/90">
+          Diseño Web & Conversión
+        </span>
+      </div>
+
+    </div>
+  </div>
   <!-- 1. NAVBAR -->
 <!-- 1. NAVBAR -->
-  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-brand-navy/95 backdrop-blur-md border-b border-white/10">
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 navbar-navy-depth border-b border-white/10 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 md:h-20">
         
-        <!-- Logo & Brand Name -->
-        <a href="#" class="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-sky rounded-lg py-1">
-          <img src="assets/logo.png" alt="Logotipo de Bind & Yield" class="w-9 h-9 md:w-10 md:h-10 object-contain rounded-full bg-white p-0.5">
-          <span class="font-display font-bold text-xl md:text-2xl tracking-tight text-white">
-            Bind <span class="text-brand-sky">&</span> Yield
-          </span>
+        <!-- Grupo Izquierdo: Logo oficial (Móvil y Escritorio) -->
+        <a href="#" class="inline-flex items-center shrink-0" aria-label="Bind & Yield - Inicio">
+          <img 
+            src="assets/logo-bind-yield.png" 
+            alt="Bind & Yield" 
+            class="h-[38px] md:h-[52px] w-auto object-contain"
+          >
         </a>
+  >
+</a>
 
-        <!-- Desktop Navigation -->
-        <nav class="hidden md:flex items-center gap-8" aria-label="Navegación principal">
-          <a href="#catalogo-whatsapp" class="text-sm font-medium text-slate-200 hover:text-brand-sky transition-colors">Catálogo WhatsApp</a>
-          <a href="#proceso" class="text-sm font-medium text-slate-200 hover:text-brand-sky transition-colors">Proceso</a>
-          <a href="#proyectos" class="text-sm font-medium text-slate-200 hover:text-brand-sky transition-colors">Proyectos</a>
-        </nav>
+        <!-- Grupo Derecho: Menú + CTA y Botón Móvil -->
+        <div class="flex items-center gap-6 lg:gap-10">
+          
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex items-center gap-6" aria-label="Navegación principal">
+            <a href="#catalogo-whatsapp" class="relative text-base font-medium text-slate-200 hover:text-brand-sky transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:w-0 after:h-[2px] after:bg-brand-sky after:transition-all after:duration-300 hover:after:w-full">Solución</a>
+            <a href="#proceso" class="relative text-base font-medium text-slate-200 hover:text-brand-sky transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:w-0 after:h-[2px] after:bg-brand-sky after:transition-all after:duration-300 hover:after:w-full">Proceso</a>
+            <a href="#proyectos" class="relative text-base font-medium text-slate-200 hover:text-brand-sky transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:w-0 after:h-[2px] after:bg-brand-sky after:transition-all after:duration-300 hover:after:w-full">Proyectos</a>
+            <a href="#contacto" class="relative text-base font-medium text-slate-200 hover:text-brand-sky transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:w-0 after:h-[2px] after:bg-brand-sky after:transition-all after:duration-300 hover:after:w-full">Contacto</a>
+          </nav>
 
-        <!-- Desktop CTA -->
-        <div class="hidden md:flex items-center">
-          <a href="#contacto" class="btn-primary inline-flex items-center justify-center px-5 py-2.5 text-sm font-display font-semibold text-brand-navy bg-brand-sky hover:bg-brand-skyHover rounded-xl transition-all shadow-sm">
-            Solicitar reunión
+          <!-- Desktop CTA -->
+          <a href="#contacto" class="hidden md:inline-flex items-center justify-center px-5 py-2.5 text-sm font-display font-semibold text-brand-navy bg-brand-sky hover:bg-brand-skyHover hover:scale-105 rounded-xl transform transition-all duration-300 shadow-sm">
+            Cotizar
           </a>
-        </div>
 
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" type="button" class="md:hidden inline-flex items-center justify-center p-2.5 rounded-xl text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-sky" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú de navegación">
-          <svg id="icon-menu-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-          <svg id="icon-menu-close" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-btn" type="button" class="md:hidden inline-flex items-center justify-center p-2.5 rounded-xl text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-sky" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú de navegación">
+            <svg id="icon-menu-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg id="icon-menu-close" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
       </div>
     </div>
 
     <!-- Mobile Menu Drawer -->
     <div id="mobile-menu" class="hidden md:hidden bg-brand-navy border-b border-white/10 px-4 pt-2 pb-6 shadow-lg">
       <nav class="flex flex-col space-y-1" aria-label="Navegación móvil">
-        <a href="#catalogo-whatsapp" class="mobile-link px-3 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10">Catálogo WhatsApp</a>
-        <a href="#proceso" class="mobile-link px-3 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10">Nuestro proceso</a>
+        <a href="#catalogo-whatsapp" class="mobile-link px-3 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10">Solución</a>
+        <a href="#proceso" class="mobile-link px-3 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10">Proceso</a>
         <a href="#proyectos" class="mobile-link px-3 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10">Proyectos</a>
+        <a href="#contacto" class="mobile-link px-3 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10">Contacto</a>
         <div class="pt-3">
           <a href="#contacto" class="mobile-link w-full flex items-center justify-center px-5 py-3.5 text-base font-display font-bold text-brand-navy bg-brand-sky hover:bg-brand-skyHover rounded-xl shadow-sm">
-            Solicitar reunión
+            Cotizar
           </a>
         </div>
       </nav>
     </div>
   </header>
+<!-- MOBILE BOTTOM NAVBAR (Flotante, blanco hueso y más amplio) -->
+  <nav id="mobile-bottom-nav" aria-label="Navegación rápida móvil" class="md:hidden fixed bottom-4 inset-x-3 mx-auto max-w-[430px] z-40 bg-[#FAF9F6]/85 backdrop-blur-md border border-brand-navy/15 rounded-2xl shadow-[0_10px_28px_rgba(14,38,70,0.14)] translate-y-full opacity-0 pointer-events-none transition-all duration-300">
+    <div class="flex items-center justify-between h-14 px-7">
+      <a href="#catalogo-whatsapp" class="text-[15px] font-semibold text-brand-navy hover:text-sky-600 active:text-sky-600 transition-colors py-3">Solución</a>
+      <a href="#proceso" class="text-[15px] font-semibold text-brand-navy hover:text-sky-600 active:text-sky-600 transition-colors py-3">Proceso</a>
+      <a href="#proyectos" class="text-[15px] font-semibold text-brand-navy hover:text-sky-600 active:text-sky-600 transition-colors py-3">Proyectos</a>
+      <a href="#contacto" class="text-[15px] font-semibold text-brand-navy hover:text-sky-600 active:text-sky-600 transition-colors py-3">Contacto</a>
+    </div>
+  </nav>
+
+    <!-- 2. HERO SECTION -->
     <!-- 2. HERO SECTION -->
     <section class="relative pt-20 pb-16 md:pt-24 md:pb-24 lg:pt-46 lg:pb-28 overflow-hidden">
       <!-- Subtle Background Decoration -->
@@ -109,14 +190,14 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
           <!-- Left Content -->
-          <div class="lg:col-span-7 text-left hero-animate">
+          <div class="lg:col-span-7 text-left">
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-surface border border-slate-200/80 mb-5">
               <span class="w-1.5 h-1.5 rounded-full bg-brand-sky"></span>
               <span class="text-[11px] font-semibold uppercase tracking-wider text-brand-navy">Diseño Web & Conversión Digital</span>
             </div>
 
             <h1 class="hero-title font-display font-extrabold text-brand-navy tracking-tight leading-[1.12] mb-5">
-              No solo diseñamos páginas web; creamos tu mejor <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-navy via-brand-navy to-sky-600">canal de ventas</span> en internet.
+              Más que una web. Creamos tu mejor <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-navy via-brand-navy to-sky-600">canal de ventas</span> en internet.
             </h1>
 
             <p class="text-sm sm:text-base md:text-lg text-brand-slate leading-relaxed mb-6 max-w-xl">
@@ -126,7 +207,7 @@
             <!-- CTAs -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <a href="#contacto" class="btn-primary inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-display font-semibold text-white bg-brand-navy hover:bg-brand-navyHover rounded-xl shadow-md transition-all">
-                <span>Solicitar reunión</span>
+                <span>Cotizar</span>
                 <svg class="w-4 h-4 text-brand-sky" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                 </svg>
@@ -138,31 +219,33 @@
           </div>
 
           <!-- Right Composition (UI Mockup + Real Context) -->
-          <div class="lg:col-span-5 relative hero-animate hero-animate-delay lg:mt-3">
+          <div class="lg:col-span-5 relative lg:mt-3">
             <div class="relative mx-auto max-w-sm lg:max-w-[90%] lg:ml-auto">
+             <!-- Main Browser / Storefront Frame -->
               <!-- Main Browser / Storefront Frame -->
-              <div class="bg-white rounded-2xl border border-slate-200/80 shadow-floating overflow-hidden">
-                <!-- Browser Top Bar -->
-                <div class="bg-brand-surface px-3.5 py-2.5 border-b border-slate-200/60 flex items-center justify-between">
-                  <div class="flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-slate-300"></span>
-                    <span class="w-2 h-2 rounded-full bg-slate-300"></span>
-                    <span class="w-2 h-2 rounded-full bg-slate-300"></span>
-                  </div>
-                  <div class="bg-white px-2.5 py-0.5 rounded-md text-[10px] text-slate-400 font-medium border border-slate-100">
-                    tunegocio.com
-                  </div>
-                  <div class="w-5"></div>
-                </div>
+<div class="animate-float-subtle bg-white rounded-2xl border border-brand-navy/20 shadow-[0_4px_14px_rgba(14,38,70,0.08),0_24px_50px_-12px_rgba(14,38,70,0.28)] overflow-hidden">
+<div class="bg-white rounded-2xl border border-brand-navy/20 shadow-[0_4px_14px_rgba(14,38,70,0.08),0_24px_50px_-12px_rgba(14,38,70,0.28)] overflow-hidden">
+  <!-- Browser Top Bar -->
+  <div class="bg-slate-100 px-3.5 py-2.5 border-b border-slate-200 flex items-center justify-between">
+    <div class="flex items-center gap-1.5">
+      <span class="w-2.5 h-2.5 rounded-full bg-slate-400/70"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-slate-400/70"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-slate-400/70"></span>
+    </div>
+    <div class="bg-white px-3 py-0.5 rounded-md text-[10px] text-slate-500 font-medium border border-slate-200 shadow-sm">
+      tunegocio.com
+    </div>
+    <div class="w-5"></div>
+  </div>
 
                 <!-- Image + Simulated Interface -->
                 <div class="relative">
                   <img 
-                    src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80" 
-                    alt="Comercio moderno gestionando atención y ventas digitales" 
-                    class="w-full h-48 sm:h-56 object-cover"
-                    loading="eager"
-                  >
+  src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80" 
+  alt="Comercio moderno gestionando atención y ventas digitales" 
+  class="w-full h-48 sm:h-56 object-cover object-[center_10%]"
+  loading="eager"
+>
                   <div class="p-4 bg-white">
                     <div class="flex items-center justify-between mb-2.5">
                       <div>
@@ -195,9 +278,9 @@
         </div>
       </div>
 
-      <!-- Indicador animado de scroll visible al cargar -->
-      <div id="scroll-indicator" class="scroll-indicator fixed bottom-4 md:bottom-6 inset-x-0 flex justify-center pointer-events-none z-30 transition-all duration-300">
-        <a href="#catalogo-whatsapp" aria-label="Bajar para explorar" class="hero-animate pointer-events-auto inline-flex flex-col items-center gap-1 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-card text-brand-navy/70 hover:text-brand-navy transition-colors">
+      <!-- Indicador animado de scroll (Solo visible en escritorio) -->
+      <div id="scroll-indicator" class="scroll-indicator hidden md:flex fixed bottom-6 inset-x-0 justify-center pointer-events-none z-30 transition-all duration-300">
+        <a href="#catalogo-whatsapp" aria-label="Bajar para explorar" class="pointer-events-auto inline-flex flex-col items-center gap-1 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-card text-brand-navy/70 hover:text-brand-navy transition-colors">
           <span class="text-[10px] font-display font-semibold uppercase tracking-widest">Explorar</span>
           <svg class="w-3.5 h-3.5 text-sky-600 scroll-arrow-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"></path>
@@ -205,7 +288,6 @@
         </a>
       </div>
     </section>
-
     <!-- 3. VENTAJAS DEL CATÁLOGO POR WHATSAPP -->
     <!-- 3. VENTAJAS DEL CATÁLOGO POR WHATSAPP -->
     <section id="catalogo-whatsapp" class="py-16 md:py-24 bg-brand-surface border-y border-slate-200/60">
@@ -389,7 +471,7 @@
           <div class="max-w-2xl">
             <span class="text-xs font-bold uppercase tracking-widest text-sky-600 block mb-3">Resultados Reales</span>
             <h2 class="section-title font-display font-bold text-brand-navy tracking-tight mb-4">
-              Proyectos orientados a la conversión.
+              Nuestros Proyectos.
             </h2>
             <p class="text-base text-brand-slate">
               Explora cómo hemos ayudado a otros negocios a profesionalizar su presencia online y agilizar su recepción de pedidos o consultas.
@@ -405,7 +487,7 @@
             <div class="relative h-56 overflow-hidden bg-slate-100">
               <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Catálogo Digital para Ferretería" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-4 left-4">
-                <span class="px-3 py-1 text-xs font-bold rounded-full bg-brand-navy text-white shadow-sm">Catálogo WhatsApp</span>
+                <span class="px-3 py-1 text-xs font-bold rounded-full bg-brand-navy text-white shadow-sm">Solución</span>
               </div>
             </div>
             <div class="p-6">
@@ -441,7 +523,7 @@
             <div class="relative h-56 overflow-hidden bg-slate-100">
               <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Menú Interactivo para Restaurante" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-4 left-4">
-                <span class="px-3 py-1 text-xs font-bold rounded-full bg-brand-navy text-white shadow-sm">Catálogo WhatsApp</span>
+                <span class="px-3 py-1 text-xs font-bold rounded-full bg-brand-navy text-white shadow-sm">Solución</span>
               </div>
             </div>
             <div class="p-6">
@@ -458,20 +540,19 @@
       </div>
     </section>
 
-    <!-- 6. CONTACTO -->
-    <section id="contacto" class="py-16 md:py-24 bg-brand-surface border-t border-slate-200/60">
+<!-- 6. CONTACTO -->
+    <section id="contacto" class="py-16 md:py-24 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-floating overflow-hidden">
+        <div class="bg-white rounded-3xl border border-brand-navy/20 shadow-[0_4px_14px_rgba(14,38,70,0.08),0_24px_50px_-12px_rgba(14,38,70,0.28)] overflow-hidden">
           <div class="grid grid-cols-1 lg:grid-cols-12">
             
             <!-- Left Persuasive CTA Column -->
-            <div class="lg:col-span-5 bg-brand-navy text-white p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
+            <div class="lg:col-span-5 bg-navy-depth text-white p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
               <div>
                 <span class="inline-block text-xs font-bold uppercase tracking-widest text-brand-sky mb-4">Hablemos de tu proyecto</span>
                 <h2 class="font-display font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-5">
                   Cuéntanos sobre tu negocio y encontremos la mejor solución.
                 </h2>
-                
 
                 <ul class="space-y-4 text-sm text-slate-200">
                   <li class="flex items-start gap-3">
@@ -605,56 +686,57 @@
   </main>
 
   <!-- 7. FOOTER -->
-  <footer class="bg-brand-surface py-10">
+  <footer class="bg-navy-depth text-white border-t border-white/10 pt-12 pb-24 md:py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Cuadro contenedor del footer -->
-      <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm p-6 sm:p-10">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
-          <a href="#" class="flex items-center gap-3">
-            <img src="assets/logo.png" alt="Logotipo de Bind & Yield" class="w-8 h-8 object-contain rounded-full scale opacity-80">
-            <span class="font-display font-bold text-xl tracking-tight text-brand-navy">
-              Bind <span class="text-brand-sky">&</span> Yield
-            </span>
-          </a>
-          
-          <div class="flex flex-col sm:flex-row items-center gap-6">
-            <div class="flex items-center gap-6">
-              <a href="#catalogo-whatsapp" class="text-sm font-medium text-slate-500 hover:text-brand-navy transition-colors">Catálogo WhatsApp</a>
-              <a href="#proyectos" class="text-sm font-medium text-slate-500 hover:text-brand-navy transition-colors">Proyectos</a>
-              <a href="#contacto" class="text-sm font-medium text-slate-500 hover:text-brand-navy transition-colors">Contacto</a>
-            </div>
+      
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+        <!-- Logo oficial (versión con letras blancas para fondo oscuro) -->
+        <a href="#" class="inline-flex items-center shrink-0" aria-label="Bind & Yield - Inicio">
+          <img 
+            src="assets/logo-bind-yield.png" 
+            alt="Bind & Yield" 
+            class="h-[36px] md:h-[42px] w-auto object-contain"
+          >
+        </a>
+        
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <div class="flex items-center gap-6">
+            <a href="#catalogo-whatsapp" class="text-sm font-medium text-slate-300 hover:text-brand-sky transition-colors">Solución</a>
+            <a href="#proyectos" class="text-sm font-medium text-slate-300 hover:text-brand-sky transition-colors">Proyectos</a>
+            <a href="#contacto" class="text-sm font-medium text-slate-300 hover:text-brand-sky transition-colors">Contacto</a>
+          </div>
 
-            <!-- Separador vertical -->
-            <div class="hidden sm:block h-5 w-px bg-slate-300"></div>
+          <!-- Separador vertical -->
+          <div class="hidden sm:block h-5 w-px bg-white/15"></div>
 
-            <!-- Redes sociales -->
-            <div class="flex items-center gap-3">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Bind & Yield" class="p-2 rounded-lg text-slate-500 hover:text-brand-navy hover:bg-slate-200/60 transition-colors">
-                <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                </svg>
-              </a>
+          <!-- Redes sociales -->
+          <div class="flex items-center gap-3">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Bind & Yield" class="p-2 rounded-lg text-slate-300 hover:text-brand-sky hover:bg-white/10 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+              </svg>
+            </a>
 
-              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok de Bind & Yield" class="p-2 rounded-lg text-slate-500 hover:text-brand-navy hover:bg-slate-200/60 transition-colors">
-                <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
-                </svg>
-              </a>
-            </div>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok de Bind & Yield" class="p-2 rounded-lg text-slate-300 hover:text-brand-sky hover:bg-white/10 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+              </svg>
+            </a>
           </div>
         </div>
-        
-        <div class="border-t border-slate-200/80 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p class="text-xs text-slate-400 font-medium">
-            © 2026 Bind & Yield. Todos los derechos reservados.
-          </p>
-          <p class="text-xs text-slate-400 font-medium">
-            Diseño enfocado en conversión.
-          </p>
-        </div>
       </div>
+      
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-slate-400 font-medium">
+          © 2026 Bind & Yield. Todos los derechos reservados.
+        </p>
+        <p class="text-xs text-slate-400 font-medium">
+          Diseño enfocado en conversión.
+        </p>
+      </div>
+
     </div>
   </footer>
 
