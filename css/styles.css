@@ -29,7 +29,7 @@ body {
    Tipografía Fluida (Mobile-First con clamp)
    ========================================================================== */
 .hero-title {
-  font-size: clamp(2rem, 4.5vw + 1rem, 3.5rem);
+  font-size: clamp(1.8rem, 4vw + 0.9rem, 3.15rem);
   letter-spacing: -0.025em;
 }
 
@@ -41,11 +41,6 @@ body {
 /* ==========================================================================
    Navbar & Estados de Scroll
    ========================================================================== */
-#navbar.is-scrolled {
-  background-color: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 4px 24px -6px rgba(14, 38, 70, 0.08);
-  border-bottom-color: rgba(226, 232, 240, 0.9);
-}
 
 /* ==========================================================================
    Botones y Microinteracciones
@@ -95,6 +90,27 @@ body {
 /* ==========================================================================
    Motion Design & Animaciones Sutiles
    ========================================================================== */
+   /* Desvanecimiento del indicador al hacer scroll */
+.scroll-indicator.is-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes scrollArrowBounce {
+    0%, 100% {
+      transform: translateY(-2px);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+  }
+
+  .scroll-arrow-bounce {
+    animation: scrollArrowBounce 1.6s ease-in-out infinite;
+  }
+}
 @media (prefers-reduced-motion: no-preference) {
   /* Aparición gradual al hacer scroll (controlado por IntersectionObserver en JS) */
   .reveal {
@@ -113,7 +129,7 @@ body {
   /* Flotación suave para la tarjeta de notificación de WhatsApp en el Hero */
   @keyframes gentleFloat {
     0%, 100% {
-      transform: translateY(0px);
+      transform: translateY(5px);
     }
     50% {
       transform: translateY(-6px);
@@ -122,6 +138,26 @@ body {
 
   .animate-float {
     animation: gentleFloat 4.5s ease-in-out infinite;
+  }
+  /* Animación automática al cargar para el Hero (sin esperar scroll) */
+  @keyframes heroFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-animate {
+    opacity: 0;
+    animation: heroFadeIn 0.7s var(--transition-smooth) forwards;
+  }
+
+  .hero-animate-delay {
+    animation-delay: 0.15s;
   }
 }
 

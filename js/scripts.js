@@ -4,16 +4,14 @@
  * ==========================================================================
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  
+const initBindAndYield = () => {
   // ==========================================================================
   // 1. Navbar Scroll State
   // ==========================================================================
   const navbar = document.getElementById('navbar');
-  
+
   const handleScroll = () => {
     if (!navbar) return;
-    // Añade la clase 'is-scrolled' cuando el usuario baja más de 20px
     if (window.scrollY > 20) {
       navbar.classList.add('is-scrolled');
     } else {
@@ -21,67 +19,81 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Escuchar el evento de scroll (usar passive para mejor rendimiento)
   window.addEventListener('scroll', handleScroll, { passive: true });
-  // Ejecutar una vez al cargar por si la página ya está scrolleada
   handleScroll();
-
 
   // ==========================================================================
   // 2. Mobile Menu Toggle
   // ==========================================================================
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
+  const iconMenuOpen = document.getElementById('icon-menu-open');
+  const iconMenuClose = document.getElementById('icon-menu-close');
   const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+
+  const setMobileMenuState = (isOpen) => {
+    if (!mobileMenu || !mobileMenuBtn) return;
+    mobileMenu.classList.toggle('hidden', !isOpen);
+    mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+
+    if (iconMenuOpen && iconMenuClose) {
+      iconMenuOpen.classList.toggle('hidden', isOpen);
+      iconMenuClose.classList.toggle('hidden', !isOpen);
+    }
+  };
 
   if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener('click', () => {
-      const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
-      mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
-      mobileMenu.classList.toggle('hidden');
+      const isCurrentlyOpen = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+      setMobileMenuState(!isCurrentlyOpen);
     });
 
-    // Cerrar el menú móvil al hacer clic en un enlace
-    mobileMenuLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
-      });
+    mobileMenuLinks.forEach((link) => {
+      link.addEventListener('click', () => setMobileMenuState(false));
     });
   }
-
 
   // ==========================================================================
   // 3. Scroll Reveal Animations (Intersection Observer)
   // ==========================================================================
   const revealElements = document.querySelectorAll('.reveal');
-
-  // Comprueba si el usuario tiene activada la reducción de movimiento
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (revealElements.length > 0 && !prefersReducedMotion && 'IntersectionObserver' in window) {
-    const revealOptions = {
-      root: null,
-      rootMargin: '0px 0px -10% 0px', // Activa la animación un poco antes de llegar al fondo
-      threshold: 0.1
-    };
+  const showAllRevealElements = () => {
+    revealElements.forEach((el) => el.classList.add('is-visible'));
+  };
 
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          // Deja de observar el elemento una vez que ya apareció
-          observer.unobserve(entry.target);
+  if (revealElements.length > 0 && !prefersReducedMotion && 'IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -20px 0px',
+        threshold: 0.05
+      }
+    );
+
+    revealElements.forEach((el) => revealObserver.observe(el));
+
+    // Respaldo: asegura que los elementos visibles en pantalla nunca queden en opacity: 0
+    setTimeout(() => {
+      revealElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.classList.add('is-visible');
         }
       });
-    }, revealOptions);
-
-    revealElements.forEach(el => revealObserver.observe(el));
+    }, 600);
   } else {
-    // Fallback: Si no hay soporte o prefiere no animaciones, mostrar todo
-    revealElements.forEach(el => el.classList.add('is-visible'));
+    showAllRevealElements();
   }
-
 
   // ==========================================================================
   // 4. Form Validation & Handling
@@ -89,24 +101,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contact-form');
 
   if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
       let isValid = true;
-
-      // Selecciona todos los inputs y textareas requeridos
       const requiredFields = contactForm.querySelectorAll('[required]');
 
-      requiredFields.forEach(field => {
-        // Limpia estados previos
+      requiredFields.forEach((field) => {
         field.classList.remove('is-invalid');
-        
-        // Validación básica de campos vacíos
+
         if (!field.value.trim()) {
           isValid = false;
           field.classList.add('is-invalid');
         }
 
-        // Validación específica para email
         if (field.type === 'email' && field.value.trim()) {
           const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailPattern.test(field.value.trim())) {
@@ -117,14 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (isValid) {
-        // Aquí iría tu lógica de envío (Fetch API, form action, etc.)
         const submitBtn = contactForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
-        
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'Enviando...';
 
-        // Simulación de envío exitoso (reemplazar con API real)
         setTimeout(() => {
           alert('¡Gracias! Tu mensaje ha sido enviado exitosamente.');
           contactForm.reset();
@@ -134,8 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Remover estado de error al escribir
-    contactForm.addEventListener('input', function(e) {
+    contactForm.addEventListener('input', function (e) {
       if (e.target.classList.contains('is-invalid')) {
         e.target.classList.remove('is-invalid');
       }
@@ -149,5 +153,27 @@ document.addEventListener('DOMContentLoaded', () => {
   if (yearElement) {
     yearElement.textContent = new Date().getFullYear();
   }
+};
 
-});
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBindAndYield);
+} else {
+  initBindAndYield();
+}
+const navbar = document.getElementById('navbar');
+  const scrollIndicator = document.getElementById('scroll-indicator');
+
+  const handleScroll = () => {
+    const isScrolled = window.scrollY > 20;
+
+    if (navbar) {
+      navbar.classList.toggle('is-scrolled', isScrolled);
+    }
+
+    if (scrollIndicator) {
+      scrollIndicator.classList.toggle('is-hidden', isScrolled);
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
